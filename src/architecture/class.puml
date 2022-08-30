@@ -1,0 +1,26 @@
+@startuml
+Title: Todo
+
+class User {
+    name: string
+}
+
+class TodoList {
+
+    todos: Todos[]
+    addTodo(todo: Todo): void
+    removeTodo(todo: Todo): void
+    getTodos(): Todos[]
+    getTodoById(id: number): Todo
+
+}
+
+class Todos {
+
+    content: string
+    isCompleted: boolean
+    id: number
+
+}
+
+@enduml

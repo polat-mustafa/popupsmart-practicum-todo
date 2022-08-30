@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
+
+import { fetchTodos } from "./store/todo/fetch";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import { Body, TodoDetail } from "./pages";
+
+import { useAuth0 } from "@auth0/auth0-react";
 
 function App() {
+  const { user } = useAuth0();
+
+  const dispatch = useDispatch();
+
+  const todos = useSelector((state) => state.todo.todos);
+
+  useEffect(() => {
+    dispatch(fetchTodos());
+  }, [dispatch]);
+
+  useEffect(() => {
+    localStorage.setItem("todos0", JSON.stringify(todos));
+    localStorage.setItem("user0", JSON.stringify(user));
+  }, [todos, user]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Body />} />
+        <Route path="/:id" element={<TodoDetail />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
